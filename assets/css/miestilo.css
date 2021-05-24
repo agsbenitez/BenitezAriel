@@ -1,0 +1,72 @@
+@font-face {
+    font-family: fortunates;
+    src: url(Fortunates.ttf);
+    font-family: breamcatcher;
+    src: url(breamcatcher.ttf)
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+  .footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+/* changing brand text color*/
+
+.navbar-custom {
+    background-color:#005923;
+}
+/* Modify brand and text color */
+  
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color:#005923;
+}
+
+.about{
+    text-align: center;
+}
+
+.text{
+    font-family: breamcatcher;
+    font-size: 30px;
+    text-decoration-color: blanchedalmond;
+    text-align: justify;
+}
+
+.tf2{
+    font-size: 20px;
+}
+
+
+
+.condiciones{
+    text-align: justify;
+    font-size: 12px;
+}
+
+.p1{
+    text-align: center;
+}
+
+#foot{
+    color: antiquewhite;
+    
+}
+
+.formu{
+    margin:0px auto;
+}
+
+#divForm{
+    text-align:center;
+}
