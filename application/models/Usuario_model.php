@@ -17,7 +17,7 @@ class Usuario_model extends CI_Model{
 
     public function list_usuarios()
     {
-        $query = $this->db->get('usuarios');
+        $query = $this->db->get_where('usuarios', array('baja'=> 'No'));
         if ($query->num_rows() > 0) {
             return $query;
         } else {

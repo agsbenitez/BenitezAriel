@@ -4,3 +4,5 @@
 
 <!--Linkeo archivos free jqgrid-->
 <script src="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/js/jquery.jqgrid.min.js"></script>
+
+<script src="<?php echo BASE_URL("assets/js/mijs.js"); ?>"></script>

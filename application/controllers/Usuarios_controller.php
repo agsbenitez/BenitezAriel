@@ -76,16 +76,16 @@ class Usuarios_controller extends CI_Controller{
     public function list_us(){
 
         //motodo que devuelve ellistado de usuarios via json
-        $usuarios = $this->usuario_model->list_usuarios();
-        $cantidad = $usuarios->num_rows();
-        foreach ($usuarios as $usuario) {
-            echo(str($usuario['nombre']));
+        $usuarios = $this->usuario_model->list_usuarios()->result_array();
+        //$cantidad = $usuarios->num_rows();
 
-        }
+        header("Content-Type: application/json");
+        echo json_encode($usuarios);
+     
+        /* if ($cantidad > 0) {
 
-        if ($cantidad > 0) {
             echo json_encode($usuarios, JSON_PRETTY_PRINT);
-        }
+        } */
         
     }
 
@@ -93,7 +93,18 @@ class Usuarios_controller extends CI_Controller{
 
         //Muestra la página de listado de usuarios
 		$data = array('titulo' => 'Listado de Usuarios');
-		$loadSections = ['base/encabezado', 'base/menu', 'pages/usuarios/usuarios', 'base/footer'];
+
+        $session_data = $this->session->userdata('logged_in');
+		
+        $data['perfil_id'] = $session_data['perfil_id'];
+		
+        $data['nombre'] = $session_data['nombre'];
+		
+		
+		$this->load->view('base/encabezado',$data);
+
+		$loadSections = ['base/menuV2', 'pages/usuarios/usuarios', 'base/footer'];
+        
         foreach($loadSections as $sections){
 		    $this->load->view($sections);
 		};
