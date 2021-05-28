@@ -94,8 +94,17 @@ class Usuarios_controller extends CI_Controller{
         //Muestra la página de listado de usuarios
 		$data = array('titulo' => 'Listado de Usuarios');
 
+        
+
         $session_data = $this->session->userdata('logged_in');
 		
+        /* foreach ($session_data as $key => $value) {
+            echo $key;
+            echo(": ");
+            echo $value;
+            echo(" ");
+        } */
+
         $data['perfil_id'] = $session_data['perfil_id'];
 		
         $data['nombre'] = $session_data['nombre'];

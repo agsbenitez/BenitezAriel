@@ -1,10 +1,10 @@
-<script type="text/javascript" language="javascript" >
+
 $(document).ready(function(){
-    
     var usuariosTable = $('#usuarios_data').bootgrid({
+
         ajax:true,
         rowSelect: true,
-        url:"<?php echo base_url('bootgrid/fetch_data'); ?>",
+        url: base_url + 'bootgrid/fetch_data',
         formatters:{
             "commands":function(column, row)
             {
@@ -32,7 +32,7 @@ $(document).ready(function(){
         if(nombre != '' && apellido != '' &&  email != '' &&  usuario != '' &&  password != '' &&  perfil != '')
         {
             $.ajax({
-                url:"<?php echo base_url(); ?>bootgrid/action",
+                url:base_url + 'bootgrid/action',
                 method:"POST",
                 data:form_data,
                 success:function(data)
@@ -54,7 +54,7 @@ $(document).ready(function(){
         usuariosTable.find('.update').on('click', function(event){
             var id = $(this).data('row-id');
             $.ajax({
-                url:"<?php echo base_url(); ?>bootgrid/fetch_single_data",
+                url:base_url + 'bootgrid/fetch_single_data',
                 method:"POST",
                 data:{id:id},
                 dataType:"json",
@@ -81,7 +81,7 @@ $(document).ready(function(){
             {
                 var id = $(this).data('row-id');
                 $.ajax({
-                    url:"<?php echo base_url(); ?>bootgrid/delete_data",
+                    url:base_url + 'bootgrid/delete_data',
                     method:"POST",
                     data:{id:id},
                     success:function(data)
@@ -99,4 +99,3 @@ $(document).ready(function(){
     }); 
     
 });
-</script>

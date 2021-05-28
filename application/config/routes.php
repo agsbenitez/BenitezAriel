@@ -63,7 +63,6 @@ $route['usuarios/listado'] = "Usuarios_controller/list_user";
 $route['usuarios/listJson'] = "Usuarios_controller/list_us";
 
 /*rutas para bootgrid de usuarios */
-$route['bootgrid'] = "Bootgrid";
 $route['bootgrid/fetch_data'] = "Bootgrid/fetch_data";
 $route['bootgrid/action'] = 'Bootgrid/action';
 $route['bootgrid/fetch_single_data'] = 'Bootgrid/fetch_single_data';
