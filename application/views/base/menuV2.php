@@ -28,7 +28,10 @@ Ver el tema de lo iconos que no carga
       <li>
         <a class="nav-link text-light pru" href="<?php echo base_url('usuarios/listado');?>">
           <i class="fas fa-users"></i> Usuarios
-        </a>  
+        </a>   
+        <a class="nav-link text-light pru" href="<?php echo base_url('bootgrid');?>">
+          <i class="fas fa-users"></i> Usuarios 2
+        </a>
       </li>
 
       

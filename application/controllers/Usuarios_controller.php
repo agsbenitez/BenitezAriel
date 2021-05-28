@@ -102,6 +102,7 @@ class Usuarios_controller extends CI_Controller{
 		
 		
 		$this->load->view('base/encabezado',$data);
+        //$this->load->view('pages/bootgrid');
 
 		$loadSections = ['base/menuV2', 'pages/usuarios/usuarios', 'base/footer'];
         
