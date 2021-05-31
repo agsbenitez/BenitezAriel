@@ -96,6 +96,131 @@ $(document).ready(function(){
                 return false;
             }
         });
-    }); 
+    });
+
+
+    //Grid de Productos 
+    var productTable = $('#product_data').bootgrid({
+
+        ajax:true,
+        rowSelect: true,
+        url: base_url + 'productos/fetch_data',
+        formatters:{
+            "commands":function(column, row)
+            {
+                return "<button type='button' class='btn btn-warning btn-xs update' data-row-id='"+row.id+"'>Edit</button>" + "&nbsp; <button type='button' class='btn btn-danger btn-xs delete' data-row-id='"+row.id+"'>Delete</button>";
+            }
+        }
+    });
+    
+    $('#add_button').click(function(){
+        $('#produc_form')[0].reset();
+        $('.modal-title').text("Add Producto");
+        $('#action').val("Add");
+        $('#operation').val("Add");
+    });
+
+    $(document).on('submit', '#produc_form', function(event){
+        event.preventDefault();
+        var descripcion = $('#descripcion').val();
+        var cat = $('#cat').val();
+        var image = $('#image').val();
+        var price = $('#price').val();
+        var form_data = $(this).serialize();
+        if(descripcion != '' && cat != '' &&   price != '' )
+        {
+            alert(form_data);
+            $.ajax({
+                url:base_url + 'productos/action',
+                method:"POST",
+                data:form_data,
+                success:function(data)
+                {
+                    alert(data);
+                    $('#produc_form')[0].reset();
+                    $('#productModal').modal('hide');
+                    $('#produc_data').bootgrid('reload');
+                }
+            });
+        }
+        else
+        {
+            alert("All Fields are Required");
+        }
+    });
+
+    $(document).on("loaded.rs.jquery.bootgrid", function(){
+        productTable.find('.update').on('click', function(event){
+            var id = $(this).data('row-id');
+            $.ajax({
+                url:base_url + 'productos/fetch_single_data',
+                method:"POST",
+                data:{id:id},
+                dataType:"json",
+                success:function(data)
+                {
+                    $('#producModal').modal('show');
+                    $('#descripcion').val(data.descripcion);
+                    $('#cat').val(data.cat_id);
+                    $('#image').val(data.image);
+                    $('#price').val(data.price);
+                    $('.modal-title').text("Editar Producto");
+                    $('#id').val(id);
+                    $('#action').val('Edit');
+                    $('#operation').val('Edit');
+                }
+            });
+        });
+        
+        
+        productTable.find('.delete').on('click', function(event){
+            if(confirm("Está Usted Seguro de Eliniar el producto?"))
+            {
+                var id = $(this).data('row-id');
+                $.ajax({
+                    url:base_url + 'bootgrid/delete_data',
+                    method:"POST",
+                    data:{id:id},
+                    success:function(data)
+                    {
+                        alert(data);
+                        $('#produc_data').bootgrid('reload');
+                    }
+                });
+            }
+            else
+            {
+                return false;
+            }
+        });
+    });
+    //fin grid productos
+
+    //script para visualizar la imagen que se selecciona en el modal de productos
+    const status = document.getElementById('status');
+    const output = document.getElementById('output');
+    
+    if (window.FileList && window.File && window.FileReader) {
+      document.getElementById('image').addEventListener('change', event => {
+        output.src = '';
+        status.textContent = '';
+        const file = event.target.files[0];
+        if (!file.type) {
+          status.textContent = 'Error: The File.type property does not appear to be supported on this browser.';
+          return;
+        }
+        if (!file.type.match('image.*')) {
+          status.textContent = 'Error: The selected file does not appear to be an image.'
+          return;
+        }
+        const reader = new FileReader();
+        reader.addEventListener('load', event => {
+          output.src = event.target.result;
+        });
+        reader.readAsDataURL(file);
+        
+        console.log(file)
+      }); 
+    }
     
 });

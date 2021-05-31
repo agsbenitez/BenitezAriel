@@ -21,7 +21,7 @@ Ver el tema de lo iconos que no carga
         </a>  
       </li>
       <li>
-        <a class="nav-link text-light pru" href="<?php echo base_url('produ');?>">
+        <a class="nav-link text-light pru" href="<?php echo base_url('productos/produc');?>">
           <i class="fas fa-cubes"></i>Productos
         </a>  
       </li>

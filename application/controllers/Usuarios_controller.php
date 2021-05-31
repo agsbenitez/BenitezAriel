@@ -54,7 +54,6 @@ class Usuarios_controller extends CI_Controller{
                 //Muestra la página de registro con el título de error
 				$data = array('titulo' => 'Error de formulario');
 				$loadSections = ['base/encabezado', 'base/menu', 'pages/registro', 'base/footer'];
-//
 		        foreach($loadSections as $sections){
 			        $this->load->view($sections);
 		        };		
@@ -73,22 +72,7 @@ class Usuarios_controller extends CI_Controller{
     } 
 
 
-    public function list_us(){
-
-        //motodo que devuelve ellistado de usuarios via json
-        $usuarios = $this->usuario_model->list_usuarios()->result_array();
-        //$cantidad = $usuarios->num_rows();
-
-        header("Content-Type: application/json");
-        echo json_encode($usuarios);
-     
-        /* if ($cantidad > 0) {
-
-            echo json_encode($usuarios, JSON_PRETTY_PRINT);
-        } */
-        
-    }
-
+    
     public function list_user(){
 
         //Muestra la página de listado de usuarios
@@ -98,26 +82,18 @@ class Usuarios_controller extends CI_Controller{
 
         $session_data = $this->session->userdata('logged_in');
 		
-        /* foreach ($session_data as $key => $value) {
-            echo $key;
-            echo(": ");
-            echo $value;
-            echo(" ");
-        } */
-
         $data['perfil_id'] = $session_data['perfil_id'];
 		
         $data['nombre'] = $session_data['nombre'];
 		
 		
 		$this->load->view('base/encabezado',$data);
-        //$this->load->view('pages/bootgrid');
-
-		$loadSections = ['base/menuV2', 'pages/usuarios/usuarios', 'base/footer'];
+    
+        $loadSections = ['base/menuV2', 'pages/usuarios/usuarios', 'base/footer'];
         
         foreach($loadSections as $sections){
 		    $this->load->view($sections);
-		};
+		}
     }
 
 }

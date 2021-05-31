@@ -68,6 +68,13 @@ $route['bootgrid/action'] = 'Bootgrid/action';
 $route['bootgrid/fetch_single_data'] = 'Bootgrid/fetch_single_data';
 $route['bootgrid/delete_data'] = 'Bootgrid/delete_data';
 
+
+/*Produc Routes */
+$route['productos/produc'] = "Produc_controller";
+$route['productos/fetch_data'] = "Produc_controller/fetch_data";
+$route['productos/action'] = "Produc_controller/action";
+$route['productos/fetch_single_data'] = "Produc_controller/fetch_single_data";
+
 /*Login/Logout Routes*/
 $route['login'] = "Login_controller";
 $route['login/login'] = "Login_controller/login";
