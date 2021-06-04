@@ -99,7 +99,7 @@ $(document).ready(function(){
     });
 
 
-    //Grid de Productos trabajar en el envio de la imagen 
+    //Grid de Productos
     var productTable = $('#product_data').bootgrid({
 
         ajax:true,
@@ -134,7 +134,8 @@ $(document).ready(function(){
         $('#operation').val("Add");
     });
 
-    //al apretar en el boton add del modal
+    //al apretar en el boton add del modal envia el form via ajax al controlador
+    //el cual actua segun la accion a tomar, editando o agregando un producto
     $(document).on('submit', '#produc_form', function(event){
         event.preventDefault();
         var descripcion = $('#descripcion').val();
@@ -151,7 +152,6 @@ $(document).ready(function(){
                 contentType: false,
                 cache: false,
                 //async:false,
-                processData: false,
                 success: function(data){
                     alert("Greate!!!!");
                     $('#produc_form')[0].reset();
@@ -167,7 +167,7 @@ $(document).ready(function(){
         
     });
 
-    //Al hace clcik en el boton edit 
+    //Al hacer click en el boton edit busca el id en la base y carga los datos en el modal
     $(document).on("loaded.rs.jquery.bootgrid", function(){
         productTable.find('.update').on('click', function(event){
             var id = $(this).data('row-id');
@@ -182,6 +182,7 @@ $(document).ready(function(){
                     $('#descripcion').val(data.descripcion);
                     $('#cat').val(data.cat_id);
                     $('#price').val(data.price);
+                    //se muestra la img en el modal
                     $('#output').attr("src", base_url + "assets/img/productos/" + data.image);
                     $('.modal-title').text("Editar Producto");
                     $('#id').val(id);

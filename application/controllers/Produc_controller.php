@@ -78,6 +78,9 @@ class Produc_controller extends CI_Controller{
 
     function action(){
 
+        //Esta función resibe la data via ajax(POST) y determina si es un alta o una mod
+        //recibe el archiv disponible en EL Array $_FILES 
+
         $imagename = $_FILES['image']['name']; 	
         $data = array(
             'descripcion' => $this->input->post('descripcion'),
@@ -88,17 +91,23 @@ class Produc_controller extends CI_Controller{
         $data['image'] = $imagename;
         
     
-        //codigo original
+        //se verifica que recina una operacion a relizar
         if($this->input->post('operation')){
                 
-            //hacer control de consitencia antes de grabar.
+            //si es add va a grabar a la base
             if($this->input->post('operation') == 'Add'){
-                //$this->produc_model->insert($data);
+                //envia la data al modelo para insertar la info
+                $this->produc_model->insert($data);
+                //se envia la Imagen a la Funcion para que la cargue al srv
                 $info = $this->_image_upload($_FILES['image']['name']);
+                //devuelve el resultado de la operacion 
                 echo  json_decode($info);
             }
+            //si es edit modifica
             if($this->input->post('operation') == 'Edit'){
+                //envia la data al modelo para hacer el update
                 $this->produc_model->update($data, $this->input->post('id'));
+                //envia el archivo para subier al servidor
                 $info = $this->_image_upload($_FILES['image']['name']);
                 echo  json_decode($info);
             }
@@ -134,8 +143,7 @@ class Produc_controller extends CI_Controller{
     /**
 	* Obtiene los datos del archivo imagen.
 	* Permite archivos gif, jpg, png
-	* Verifica si los datos son correcto en conjunto con la imagen y lo inserta en la tabla correspondiente
-	* En la tabla guarda la URL de donde se encuentra la imagen.
+	* Verifica si los datos son correcto en conjunto con la imagen y lo mueva al sevidor de ser posible
 	*/
 	function _image_upload($file)
 	{
@@ -153,20 +161,14 @@ class Produc_controller extends CI_Controller{
         if ($this->upload->do_upload($file)){
             // Mueve archivo a la carpeta indicada en la variable $data
             $data = $this->upload->data();
-         // Path donde guarda el archivo..
-            //$url = "assets/img/productos/" + str($file);
-            // Array de datos para insertar en productos
-         //$data = array(
-            //    'image' => $url
-            //);
-            //var_dump($data);
-            exit;
+            //lineas para hacer el debugvar_dump($data);
+            //exit;
             return $data;
         }else{
             //Mensaje de error si no existe imagen correcta
             $data = $this->upload->display_errors();
-            var_dump($data);
-            exit;
+            //lineas para hacer el debug var_dump($data);
+            //exit;
             return $data;
         }
                    
