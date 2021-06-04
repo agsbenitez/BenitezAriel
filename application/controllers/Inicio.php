@@ -19,6 +19,11 @@ class Inicio extends CI_Controller {
 		
 	}
 
+	public function info(){
+	 $this->load->view('pages/info');
+	 
+	}
+
 	public function comercializacion(){
 		
 

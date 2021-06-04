@@ -99,17 +99,22 @@ $(document).ready(function(){
     });
 
 
-    //Grid de Productos 
+    //Grid de Productos trabajar en el envio de la imagen 
     var productTable = $('#product_data').bootgrid({
 
         ajax:true,
         rowSelect: true,
         url: base_url + 'productos/fetch_data',
         formatters:{
+            "image":function(column, row){
+                return "<img class='table-img' src='" + base_url + "assets/img/productos/" + row.image + "'width='100' height='100'   />";
+
+            },
             "commands":function(column, row)
             {
                 return "<button type='button' class='btn btn-warning btn-xs update' data-row-id='"+row.id+"'>Edit</button>" + "&nbsp; <button type='button' class='btn btn-danger btn-xs delete' data-row-id='"+row.id+"'>Delete</button>";
             }
+
         }
     });
     
@@ -120,35 +125,49 @@ $(document).ready(function(){
         $('#operation').val("Add");
     });
 
+
+    $('#close').click(function(){
+        $('#produc_form')[0].reset();
+        $('#output').attr("src", '');
+        $('.modal-title').text("Add Producto");
+        $('#action').val("Add");
+        $('#operation').val("Add");
+    });
+
+    //al apretar en el boton add del modal
     $(document).on('submit', '#produc_form', function(event){
         event.preventDefault();
         var descripcion = $('#descripcion').val();
         var cat = $('#cat').val();
-        var image = $('#image').val();
+        var image = $('#output').attr("src");
         var price = $('#price').val();
-        var form_data = $(this).serialize();
-        if(descripcion != '' && cat != '' &&   price != '' )
+        if(descripcion != '' && cat != '' &&   price != '' && image !='' )
         {
-            alert(form_data);
             $.ajax({
-                url:base_url + 'productos/action',
-                method:"POST",
-                data:form_data,
-                success:function(data)
-                {
-                    alert(data);
+                url: base_url + 'productos/action',
+                type: "post",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                cache: false,
+                //async:false,
+                processData: false,
+                success: function(data){
+                    alert("Greate!!!!");
                     $('#produc_form')[0].reset();
                     $('#productModal').modal('hide');
                     $('#produc_data').bootgrid('reload');
+                    
                 }
             });
-        }
-        else
-        {
+                
+        }else{
             alert("All Fields are Required");
         }
+        
     });
 
+    //Al hace clcik en el boton edit 
     $(document).on("loaded.rs.jquery.bootgrid", function(){
         productTable.find('.update').on('click', function(event){
             var id = $(this).data('row-id');
@@ -162,8 +181,8 @@ $(document).ready(function(){
                     $('#producModal').modal('show');
                     $('#descripcion').val(data.descripcion);
                     $('#cat').val(data.cat_id);
-                    $('#image').val(data.image);
                     $('#price').val(data.price);
+                    $('#output').attr("src", base_url + "assets/img/productos/" + data.image);
                     $('.modal-title').text("Editar Producto");
                     $('#id').val(id);
                     $('#action').val('Edit');
@@ -219,7 +238,6 @@ $(document).ready(function(){
         });
         reader.readAsDataURL(file);
         
-        console.log(file)
       }); 
     }
     

@@ -84,3 +84,4 @@ $route['logout'] = "Login_controller/logout";
 
 $route['404_override'] = 'Inicio/error404';
 $route['translate_uri_dashes'] = FALSE;
+$route['info'] = 'Inicio/info';

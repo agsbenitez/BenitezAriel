@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.js"></script>
 
 <script>var base_url = '<?php echo base_url() ?>';</script>
+<!--<script type="text/javascript" src="<?php echo BASE_URL(); ?>assets/js/ajaxfileupload.js"></script>-->
 <script type="text/javascript" src="<?php echo BASE_URL(); ?>assets/js/mijs.js"></script>
 </body>
 </html>
