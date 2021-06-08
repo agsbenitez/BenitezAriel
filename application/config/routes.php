@@ -74,6 +74,7 @@ $route['productos/produc'] = "Produc_controller";
 $route['productos/fetch_data'] = "Produc_controller/fetch_data";
 $route['productos/action'] = "Produc_controller/action";
 $route['productos/fetch_single_data'] = "Produc_controller/fetch_single_data";
+$route['productos/delete_data'] = "Produc_controller/delete_data";
 
 /*Login/Logout Routes*/
 $route['login'] = "Login_controller";

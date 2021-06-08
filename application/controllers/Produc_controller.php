@@ -43,7 +43,7 @@ class Produc_controller extends CI_Controller{
         
 		    $this->load->view('base/encabezado',$data);
             
-		    $loadSections = ['base/menuV2', 'pages/products/produc', 'base/footer'];
+		    $loadSections = ['base/menuV2', 'pages/products/producV2', 'base/footer'];
             
             foreach($loadSections as $sections){
 		        $this->load->view($sections);
@@ -58,10 +58,10 @@ class Produc_controller extends CI_Controller{
 
 
     function fetch_data(){
-        //busco en el Modelo de Prodcutos 
+
+       //busco en el Modelo de Prodcutos 
         $data = $this->produc_model->make_query();
-
-
+                
         $array = array();
         foreach($data as $row){
             $array[] = $row;
@@ -72,6 +72,7 @@ class Produc_controller extends CI_Controller{
          'total'   => intval($this->produc_model->count_all_data()),
          'rows'   => $array
         );
+        
 
         echo json_encode($output);
     }
@@ -80,39 +81,54 @@ class Produc_controller extends CI_Controller{
 
         //Esta función resibe la data via ajax(POST) y determina si es un alta o una mod
         //recibe el archiv disponible en EL Array $_FILES 
-
-        $imagename = $_FILES['image']['name']; 	
-        $data = array(
-            'descripcion' => $this->input->post('descripcion'),
-            'cat_id' => $this->input->post('cat'),
-            'price' => $this->input->post('price'),
-        );
-
-        $data['image'] = $imagename;
         
-    
-        //se verifica que recina una operacion a relizar
-        if($this->input->post('operation')){
-                
-            //si es add va a grabar a la base
-            if($this->input->post('operation') == 'Add'){
-                //envia la data al modelo para insertar la info
-                $this->produc_model->insert($data);
-                //se envia la Imagen a la Funcion para que la cargue al srv
-                $info = $this->_image_upload($_FILES['image']['name']);
-                //devuelve el resultado de la operacion 
-                echo  json_decode($info);
-            }
-            //si es edit modifica
-            if($this->input->post('operation') == 'Edit'){
-                //envia la data al modelo para hacer el update
-                $this->produc_model->update($data, $this->input->post('id'));
-                //envia el archivo para subier al servidor
-                $info = $this->_image_upload($_FILES['image']['name']);
-                echo  json_decode($info);
-            }
+        if(!empty($_FILES['image']['name'])){
+
+            $imagename = $_FILES['image']['name']; 	
+            $data = array(
+                'descripcion' => $this->input->post('descripcion'),
+                'cat_id' => $this->input->post('cat'),
+                'price' => $this->input->post('price'),
+            );
+
+            $data['image'] = $imagename;
             
+            
+            
+
+            //se verifica que recina una operacion a relizar
+            if($this->input->post('operation')){
+
+                //si es add va a grabar a la base
+                if($this->input->post('operation') == 'Add'){
+                    //envia la data al modelo para insertar la info
+                    $this->produc_model->insert($data);
+                    //se envia la Imagen a la Funcion para que la cargue al srv
+                    $data['response'] = $this->_image_upload($_FILES['image']['name']);
+                    //var_dump($info);
+                    //devuelve el resultado de la operacion 
+                    header('Content-Type: application/json');
+                    echo  json_encode($data);
+                }
+                //si es edit modifica
+                if($this->input->post('operation') == 'Edit'){
+                    //envia la data al modelo para hacer el update
+                    $this->produc_model->update($data, $this->input->post('id'));
+                    //envia el archivo para subier al servidor
+                    $data['response'] = $this->_image_upload($_FILES['image']['name']);
+                    header('Content-Type: application/json');
+                    echo  json_encode($data);
+                }
+
+            }
+
+        }else{
+            //devuelco el eerror que ni esta definida ala imagen
+            $data['response'] = "No se ha recibido img";
+            echo json_encode($data);
         }
+
+        
     }
 
     function fetch_single_data(){
@@ -151,11 +167,11 @@ class Produc_controller extends CI_Controller{
 
         
         // Especifica la configuración para el archivo
-        $config['upload_path'] = 'assets/img/productos/';
-        $config['allowed_types'] = 'gif|jpg|JPEG|jpeg';
-        //$config['max_size'] = '2048';
-        //$config['max_width']  = '1024';
-        //$config['max_height']  = '768';       
+        $config['upload_path'] = 'assets/img/productos';
+    	$config['allowed_types'] = 'jpg|JPEG|png';
+    	$config['max_size'] = '2048';
+    	$config['max_width'] = '1024';
+    	$config['max_height'] = '768';      
          // Inicializa la configuración para el archivo 
         $this->upload->initialize($config);
         if ($this->upload->do_upload($file)){

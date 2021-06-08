@@ -10,34 +10,45 @@
                         <form action="#">
                             <input type="checkbox" name="baja" id="baja" value=0>
                             <label for="baja">¿Desea ver prodcutos dados de baja?</label>
-                        </form>
+                        </form> 
+                        <!--<select class="form-control" name="baja" required id="baja" onchange="cargarDataTable();">
+						    <option value="" selected>Seleccione</option>
+						    <option value="1">Productos Activos</option>
+						    <option value="2">Productos Dades de baja</option>
+						
+					    </select>-->
                     </div>
                     <div class="col-md-2" align="right">
-                        <button type="button" id="add_button" data-toggle="modal" data-target="#producModal" class="btn btn-info btn-xs">Add</button>
+                        <button type="button" id="add_buttonP" data-toggle="modal" data-target="#producModal" class="btn btn-info btn-xs">Add</button>
                     </div>
                 </div>
                 
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table id="product_data"  data-ajax="true"  class="table table-condensed">
+                    <table id="product_data" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th data-column-id="descripcion">Descripcion</th>
-                                <th data-column-id="cat">Categoria</th>
-                                <th data-column-id="image" data-formatter="image">Imagen</th>
-                                <th data-column-id="price">Precio</th>
-                                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Action</th>
+                                <th>id</th>
+                                <th>Descrpcion</th>
+                                <th>Categoria</th>
+                                <th>Precio</th>
+                                <th>Imagen</th>
+                                <th>Accion</th>
                             </tr>
                         </thead>
+                        <tbody>                           
+                        </tbody>
+                        
                     </table>
+                    <div id="pager"></div>
                 </div>
             </div>
        </div>
     </div>
 
 
-
+<!--Modale parael crud-->
     <div id="producModal" class="modal fade">
         <div class="modal-dialog">
             <form method="post" id="produc_form">

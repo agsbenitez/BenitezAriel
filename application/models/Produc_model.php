@@ -15,20 +15,21 @@ class Produc_model extends CI_Model{
 
     // Funcion que hace la consulta
     function make_query(){
-        if(isset($_POST["rowCount"])){
-            $this->records_per_page = $_POST["rowCount"];
-        }else{
-            $this->records_per_page = 10;
-        }
-        if(isset($_POST["current"])){
-            $this->current_page_number = $_POST["current"];
-        }else{
-            $this->current_page_number = 1;
-        }
+        
+        
 
         $this->start_from = ($this->current_page_number - 1) * $this->records_per_page;
         $this->db->select("*");
         $this->db->from("produc");
+
+        if (isset($_POST["baja"])) {
+            if ($_POST["baja"]=="true") {
+                $this->db->like('baja', 1);
+            }else{
+                $this->db->like('baja', 0);
+            }
+            
+        }
 
         /*Realiza el filtrado segun id o descripcin */
         if(!empty($_POST["searchPhrase"])){
@@ -44,9 +45,7 @@ class Produc_model extends CI_Model{
             $this->db->order_by('id', 'DESC');
         }
         
-        if($this->records_per_page != -1){
-            $this->db->limit($this->records_per_page, $this->start_from);
-        }
+        
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -82,7 +81,7 @@ class Produc_model extends CI_Model{
     //borra un usuario
     function delete($id){
         $this->db->where('id', $id);
-        $this->db->delete('produc');
+        $this->db->update('produc', array('baja' => 1));
     }
 
 }
