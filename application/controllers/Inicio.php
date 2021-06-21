@@ -9,7 +9,25 @@ class Inicio extends CI_Controller {
 	public function index()
 
 	{
-		$loadSections = ['base/menu', 'pages/landing', 'base/fotoGalery', 'base/foot', 'base/footer']; 
+
+		$data = array('titulo' => 'Listado de Productos');
+        
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+
+		$loadSections = ['base/menuV2', 'pages/landing', 'base/fotoGalery', 'base/foot', 'base/footer']; 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);
 		foreach($loadSections as $sections){
@@ -25,9 +43,25 @@ class Inicio extends CI_Controller {
 	}
 
 	public function comercializacion(){
+
+
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }		
 		
 
-		$loadSections = ['base/menu', 'pages/comercializacion', 'base/fotoGalery',  'base/foot', 'base/footer']; 
+		$loadSections = ['base/menuV2', 'pages/comercializacion', 'base/fotoGalery',  'base/foot', 'base/footer']; 
 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);
@@ -39,7 +73,25 @@ class Inicio extends CI_Controller {
 
 	public function nosotros()
 	{
-		$loadSections = ['base/menu', 'pages/nosotros', 'base/fotoGalery', 'base/foot', 'base/footer']; 
+
+		
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+
+
+		$loadSections = ['base/menuV2', 'pages/nosotros', 'base/fotoGalery', 'base/foot', 'base/footer']; 
 		
 		$data['titulo']='Le Motocycliste'; 
 
@@ -52,7 +104,21 @@ class Inicio extends CI_Controller {
 
 	public function contacto()
 	{
-		$loadSections = ['base/menu', 'pages/contact', 'base/fotoGalery', 'base/foot', 'base/footer'];
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+		$loadSections = ['base/menuV2', 'pages/contact', 'base/fotoGalery', 'base/foot', 'base/footer'];
 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);
@@ -65,7 +131,24 @@ class Inicio extends CI_Controller {
 
 	public function terminos()
 	{
-		$loadSections = ['base/menu', 'pages/terminos', 'base/footer'];
+
+
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+
+		$loadSections = ['base/menuV2', 'pages/terminos', 'base/footer'];
 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);
@@ -78,7 +161,24 @@ class Inicio extends CI_Controller {
 
 	public function	registro_view()
 	{
-		$loadSections = ['base/menu', 'pages/registro', 'base/footer'];
+
+
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+
+		$loadSections = ['base/menuV2', 'pages/registro', 'base/footer'];
 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);
@@ -90,7 +190,24 @@ class Inicio extends CI_Controller {
 	}
 
 	public function error404(){
-		$loadSections = ['base/menu', 'pages/error404', 'base/fotoGalery', 'base/foot', 'base/footer'];
+
+
+		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+		
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
+		
+            $data['nombre'] = "Visitante";
+        }
+
+		$loadSections = ['base/menuV2', 'pages/error404', 'base/fotoGalery', 'base/foot', 'base/footer'];
 
 		$data['titulo']='Le Motocycliste'; 
 		$this->load->view('base/encabezado', $data);

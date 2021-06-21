@@ -3,11 +3,17 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         
                     </div>
+                    <div class="col-md-2">
+                        <form action="#">
+                            <input type="checkbox" name="baja" id="bajaUsuarios" value=0>
+                            <label for="baja">¿Desea ver prodcutos dados de baja?</label>
+                        </form> 
+                    </div>
                     <div class="col-md-2" align="right">
-                        <button type="button" id="add_button" data-toggle="modal" data-target="#usuariosModal" class="btn btn-info btn-xs">Add</button>
+                        <button type="button" id="add_button_usuario" data-toggle="modal" data-target="#usuariosModal" class="btn btn-info btn-xs">Add</button>
                     </div>
                 </div>
                 
@@ -17,11 +23,11 @@
                     <table id="usuarios_data" class="table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th data-column-id="id">Id</th>
                                 <th data-column-id="nombre">Nombre</th>
                                 <th data-column-id="apellido">Apellido</th>
                                 <th data-column-id="email">Email</th>
-                                <th data-column-id="usuario">Usuario</th>
-                                
+                                <th data-column-id="perfil">Perfil</th>
                                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">Action</th>
                             </tr>
                         </thead>
@@ -54,21 +60,35 @@
                             <label>Ingrese Email</label>
                             <input name="email" id="email" class="form-control"></input>
                         </div>
-
+<!-- 
                         <div class="form-group">
                             <label>Ingrese Usuario</label>
                             <input name="usuario" id="usuario" class="form-control"></input>
                         </div>
-
+ -->
                         <div class="form-group">
                             <label>Ingrese password</label>
-                            <input name="password" id="password" class="form-control"></input>
+                            <input type="password" name="password" id="password" class="form-control "></input>
                         </div>
 
                         <div class="form-group">
-                            <label>Ingrese Perfil</label>
-                            <input name="perfil" id="perfil" class="form-control"></input>
+                            <label>Repita password</label>
+                            <input type="password" name="pass2" id="pass2" class="form-control "></input>
                         </div>
+                        
+                        <div class="form-group">
+                            <label>Ingrese perfil</label>
+                            <select name="perfil" id="perfil" class="form-control">
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="checkbox" name="bajaCheck" id="bajaUsuariosModal" value=0>
+                            <label for="baja">baja/alta?</label>
+                        </div>
+                        
+
+    
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="usuario_id" id="usuario_id" />

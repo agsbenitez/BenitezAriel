@@ -4,6 +4,8 @@
 <script src="<?php echo BASE_URL(); ?>assets/js/jquery-3.6.0.js"></script>
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.25/b-1.7.1/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.25/api/fnGetHiddenNodes.js"></script>
+
 
 <script src="<?php echo BASE_URL(); ?>assets/js/bootstrap.js"></script> 
 

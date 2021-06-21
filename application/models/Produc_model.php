@@ -16,25 +16,26 @@ class Produc_model extends CI_Model{
     // Funcion que hace la consulta
     function make_query(){
         
+        $this->db->select('p.id, p.descripcion, cp.descripcion as desc, p.price, p.stock, p.image');
         
-
-        $this->start_from = ($this->current_page_number - 1) * $this->records_per_page;
-        $this->db->select("*");
-        $this->db->from("produc");
 
         if (isset($_POST["baja"])) {
             if ($_POST["baja"]=="true") {
-                $this->db->like('baja', 1);
+                $this->db->like('p.baja', 1);
             }else{
-                $this->db->like('baja', 0);
+                $this->db->like('p.baja', 0);   
             }
             
         }
 
-        /*Realiza el filtrado segun id o descripcin */
+        if (isset($_POST["stokmin"])) {
+            $this->db->not_like('p.stock', 0);
+        }
+
+        /*Realiza el filtrado segun id o descripcin 
         if(!empty($_POST["searchPhrase"])){
             $this->db->like('id', $_POST["searchPhrase"]);
-            $this->db->or_like('descripcion', $_POST["searchPhrase"]);
+            $this->db->or_like('p.descripcion', $_POST["searchPhrase"]);
         }
 
         if(isset($_POST["sort"]) && is_array($_POST["sort"])){
@@ -42,10 +43,11 @@ class Produc_model extends CI_Model{
                 $this->db->order_by($key, $value);
             }
         }else{
-            $this->db->order_by('id', 'DESC');
+            $this->db->order_by('p.id', 'DESC');
         }
-        
-        
+        */
+        $this->db->from('produc as p');
+        $this->db->join('cat_produc as cp', 'p.cat_id = cp.id');
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -72,7 +74,7 @@ class Produc_model extends CI_Model{
         return $query->result_array();
     }
 
-    //Actualiza un usuario
+    //Actualiza un Producto
     function update($data, $id){
         $this->db->where('id', $id);
         $this->db->update('produc', $data);

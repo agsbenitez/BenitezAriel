@@ -70,3 +70,8 @@ body {
 #divForm{
     text-align:center;
 }
+
+#imgCell{
+    cursor: pointer;
+    
+}

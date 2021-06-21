@@ -31,20 +31,20 @@ class Bootgrid extends CI_Controller {
     function action(){
         if($this->input->post('operation')){
             $data = array(
-                'nombre'   => $this->input->post('nomre'),
+                'nombre'   => $this->input->post('nombre'),
                 'apellido'  => $this->input->post('apellido'),
-                'email'  => $this->input->post('email')
-                /* 'usuario' => $this->input->post('usuario'),
-                'password'   => $this->input->post('pass'),
-                'perfil' => $this->input->post('perfil_id') */
+                'email'  => $this->input->post('email'),
+                'usuario' => $this->input->post('usuario'),
+                'password'   => $this->input->post('password'),
+                'perfil' => $this->input->post('perfil')
             );
             if($this->input->post('operation') == 'Add'){
                 $this->bootgrid_model->insert($data);
-                echo 'Data Inserted';
+                echo 'Usuario Creado';
             }
             if($this->input->post('operation') == 'Edit'){
                 $this->bootgrid_model->update($data, $this->input->post('employee_id'));
-                echo 'Data Updated';
+                echo 'Usuario Modificado';
             }
         }
     }

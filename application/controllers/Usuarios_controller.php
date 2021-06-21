@@ -8,84 +8,93 @@ class Usuarios_controller extends CI_Controller{
         $this->load->model('usuario_model');
     }
 
-    public function index()
+    private function _veri_log()
     {
+        if ($this->session->userdata('logged_in')) 
+        {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 
-         //Genero las reglas de validacion
-        $this->load->library('form_validation');
-		
-        $this->form_validation->set_rules('nombre', 'Nombre', 'required');
-		$this->form_validation->set_rules('apellido', 'Apellido', 'required');
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[usuarios.email]');
-        $this->form_validation->set_rules('pass1', 'Password', 'required');
-        $this->form_validation->set_rules('pass2', 'Confirmación de Password', 'required|matches[pass1]');
-		
-        //Mensaje de error si no pasan las reglas
-		$this->form_validation->set_message('required',
-									'<div class="alert alert-danger">El campo %s es obligatorio</div>');
-        $this->form_validation->set_message('valid_email',
-									'<div class="alert alert-danger">El campo %s debe der un correo valido</div>');
-		$this->form_validation->set_message('is_unique',
-									'<div class="alert alert-danger">El campo %s ya existe</div>');
-        $this->form_validation->set_message('matches',
-                                    '<div class="alert alert-danger">Los contraseña ingresada no coincide</div>');
-		
-		//Preparo los datos para guardar en la base, en caso de que pase la validacion
-
-        $pass = $this->input->post('pass1',true);
-        $nombre = ($this->input->post("nombre"));
-        $apellido = ($this->input->post("apellido"));
-        $email = ($this->input->post("email"));
-        $pass1 = $pass;
-        
-        $data = [
-            "nombre"=>$nombre,
-            "apellido"=>$apellido,
-            "email"=>$email,
-            "usuario"=>$email,
-            "pass"=>md5($pass1),
-            "perfil_id"=>'2'
-        ];
-
-        
-        //Si no pasa la validacion de datos
-		if ($this->form_validation->run() == FALSE)
-			{
-                //Muestra la página de registro con el título de error
-				$data = array('titulo' => 'Error de formulario');
-				$loadSections = ['base/encabezado', 'base/menu', 'pages/registro', 'base/footer'];
-		        foreach($loadSections as $sections){
-			        $this->load->view($sections);
-		        };		
-			}
-			
-			else 	//Pasa la validacion
-			{
+    public function fetch_data(){
+        //busco en el Modelo de Prodcutos 
+        $data = $this->usuario_model->make_query();
                 
-				//Envio array al metodo insert para registro de datos
-				$usuario = $this->usuario_model->add_usuario($data);
+        $array = array();
+        foreach($data as $row){
+            $array[] = $row;
+        }
+        echo json_encode($array);
+    }
+    
 
-				//Redirecciono a la pagina de perfil
-				redirect('login');
-			}
+    public function action(){
+
+        if($this->input->post('operation')){
+            $pass = $this->input->post('password',true);
+            $nombre = ($this->input->post("nombre"));
+            $apellido = ($this->input->post("apellido"));
+            $email = ($this->input->post("email"));
+            $perfil = ($this->input->post("perfil"));
+
             
-    } 
+            $data = [
+                "nombre"=>$nombre,
+                "apellido"=>$apellido,
+                "email"=>$email,
+                "usuario"=>$email,
+                "pass"=>md5($pass),
+                "perfil_id"=>$perfil
+            ];
+
+            if (isset($_POST["bajaCheck"])) {
+                $data["baja"] = 1;
+            }else {
+                $data["baja"] = 0;
+            }
+           
+            if($this->input->post('operation') == 'Add'){
+                $this->usuario_model->add_usuario($data);
+                $response['success'] = 'Usuario Creado';
+                header('Content-Type: application/json'); 
+                echo json_encode($response);
+            }
+
+            if($this->input->post('operation') == 'Edit'){
+                $this->usuario_model->update_usuario($data, $this->input->post('usuario_id'));
+                $response['success'] = 'Usuario Modificado'; 
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+			
+        }
+
+    }
+
+    public function delete_data(){
+        if($this->input->post('id'))
+        {
+            $this->usuario_model->delete($this->input->post('id'));
+            $response['success'] = 'Usuario Eliminado'; 
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
+    }
 
 
     
     public function list_user(){
-
-        //Muestra la página de listado de usuarios
+        if ($this->_veri_log()) {
+            //Muestra la página de listado de usuarios
 		$data = array('titulo' => 'Listado de Usuarios');
-
-        
 
         $session_data = $this->session->userdata('logged_in');
 		
         $data['perfil_id'] = $session_data['perfil_id'];
 		
         $data['nombre'] = $session_data['nombre'];
-		
 		
 		$this->load->view('base/encabezado',$data);
     
@@ -94,6 +103,11 @@ class Usuarios_controller extends CI_Controller{
         foreach($loadSections as $sections){
 		    $this->load->view($sections);
 		}
+        } else {
+            
+            redirect('login');
+            
+        }
     }
 
 }

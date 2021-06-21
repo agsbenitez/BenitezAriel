@@ -54,7 +54,46 @@ class Produc_controller extends CI_Controller{
             
         }
         
-    }   
+    }
+
+    
+    public function  ver()
+    {
+        $data = array('titulo' => 'Listado de Productos');
+        if ($this->_veri_log()) {
+            
+            
+            $session_data = $this->session->userdata('logged_in');
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
+            
+            $data['nombre'] = $session_data['nombre'];
+            
+            
+	        $this->load->view('base/encabezado',$data);
+            
+	        $loadSections = ['base/menuV2', 'pages/products/producCli', 'base/footer'];
+            
+            foreach($loadSections as $sections){
+	            $this->load->view($sections);
+	        };
+        }else{
+            $data['nombre'] = "invitado";
+
+            $this->load->view('base/encabezado',$data);
+            
+            $loadSections = ['base/menuV2', 'pages/products/producCli', 'base/footer'];
+            
+            foreach($loadSections as $sections){
+                $this->load->view($sections);
+            };
+        }
+
+       
+
+    }
+
+   
 
 
     function fetch_data(){
@@ -77,24 +116,26 @@ class Produc_controller extends CI_Controller{
         echo json_encode($output);
     }
 
+
     function action(){
 
         //Esta función resibe la data via ajax(POST) y determina si es un alta o una mod
         //recibe el archiv disponible en EL Array $_FILES 
-        
+    
         if(!empty($_FILES['image']['name'])){
 
-            $imagename = $_FILES['image']['name']; 	
+            $imagename = basename($_FILES['image']['name']);
+            
+                        
             $data = array(
                 'descripcion' => $this->input->post('descripcion'),
                 'cat_id' => $this->input->post('cat'),
                 'price' => $this->input->post('price'),
+                'stock' => $this->input->post('stock')
             );
 
             $data['image'] = $imagename;
-            
-            
-            
+        
 
             //se verifica que recina una operacion a relizar
             if($this->input->post('operation')){
@@ -103,28 +144,58 @@ class Produc_controller extends CI_Controller{
                 if($this->input->post('operation') == 'Add'){
                     //envia la data al modelo para insertar la info
                     $this->produc_model->insert($data);
-                    //se envia la Imagen a la Funcion para que la cargue al srv
-                    $data['response'] = $this->_image_upload($_FILES['image']['name']);
-                    //var_dump($info);
-                    //devuelve el resultado de la operacion 
+                    //Cargo Imagena pedal
+
+                    $uploadDir = 'assets/img/productos/';
+                    $targetFilePath = $uploadDir . $imagename; 
+                    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                    $allowTypes = array('jpg', 'png', 'jpeg'); 
+
+                    if(in_array($fileType, $allowTypes)){ 
+                        // Upload file to the server 
+                        if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)){ 
+                            $uploadedFile = $imagename; 
+                        }else{ 
+                            $data["response"] = "Se a encontrado un error al subir el archivo"; 
+                        } 
+                    }else{ 
+                        $data["response"] = "Formato no aceptado"; 
+                    } 
                     header('Content-Type: application/json');
-                    echo  json_encode($data);
+                    echo json_encode($data);
                 }
                 //si es edit modifica
                 if($this->input->post('operation') == 'Edit'){
                     //envia la data al modelo para hacer el update
                     $this->produc_model->update($data, $this->input->post('id'));
-                    //envia el archivo para subier al servidor
-                    $data['response'] = $this->_image_upload($_FILES['image']['name']);
+                    
+                    //Cargo Imagena pedal
+
+                    $uploadDir = 'assets/img/productos/';
+                    $targetFilePath = $uploadDir . $imagename; 
+                    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                    $allowTypes = array('jpg', 'png', 'jpeg'); 
+
+                    if(in_array($fileType, $allowTypes)){ 
+                        // Upload file to the server 
+                        if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)){ 
+                            $uploadedFile = $imagename; 
+                        }else{ 
+                            $data["response"] = "Se a encontrado un error al subir el archivo"; 
+                        } 
+                    }else{ 
+                        $data["response"] = "Formato no aceptado"; 
+                    } 
                     header('Content-Type: application/json');
-                    echo  json_encode($data);
-                }
+                    echo json_encode($data);
+                } 
 
             }
 
         }else{
             //devuelco el eerror que ni esta definida ala imagen
             $data['response'] = "No se ha recibido img";
+            header('Content-Type: application/json');
             echo json_encode($data);
         }
 
@@ -138,6 +209,7 @@ class Produc_controller extends CI_Controller{
                 $output['descripcion'] = $row['descripcion'];
                 $output['cat_id'] = $row['cat_id'];
                 $output['price'] = $row['price'];
+                $output['stock'] = $row['stock'];
                 $output['image'] = $row['image'];
 
             }
@@ -168,7 +240,7 @@ class Produc_controller extends CI_Controller{
         
         // Especifica la configuración para el archivo
         $config['upload_path'] = 'assets/img/productos';
-    	$config['allowed_types'] = 'jpg|JPEG|png';
+    	$config['allowed_types'] = 'jpg|JPEG|png|jpeg';
     	$config['max_size'] = '2048';
     	$config['max_width'] = '1024';
     	$config['max_height'] = '768';      

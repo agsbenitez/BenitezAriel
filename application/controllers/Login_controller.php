@@ -13,7 +13,7 @@ class Login_controller extends CI_Controller{
     
 
     public function index(){
-        $loadSections = ['base/menu', 'pages/login', 'base/footer'];
+        $loadSections = ['base/menuV2', 'pages/login', 'base/footer'];
 
         $data['titulo']='Login'; 
 		$this->load->view('base/encabezado', $data);
@@ -40,7 +40,7 @@ class Login_controller extends CI_Controller{
         if ($this->form_validation->run() == FALSE) {
             
             $data = array('titulo' => 'Error de formulario');
-				$loadSections = ['base/encabezado', 'base/menu', 'pages/login', 'base/footer'];
+				$loadSections = ['base/encabezado', 'base/menuV2', 'pages/login', 'base/footer'];
                 foreach($loadSections as $sections){
 			        $this->load->view($sections);
 		        };
@@ -88,10 +88,21 @@ class Login_controller extends CI_Controller{
 		$loadSections = ['base/menuV2', 'pages/landing', 'base/fotoGalery', 'base/foot', 'base/footer']; 
 		
 		$session_data = $this->session->userdata('logged_in');
+    
+
+        if ($session_data != null) {
+            
+            $data['perfil_id'] = $session_data['perfil_id'];
 		
-        $data['perfil_id'] = $session_data['perfil_id'];
+            $data['nombre'] = $session_data['nombre'];  
+        }else{
+            
+            $data['perfil_id'] = 0;
 		
-        $data['nombre'] = $session_data['nombre'];
+            $data['nombre'] = "Visitante";
+        }
+		
+       
 		
 		
 		$this->load->view('base/encabezado',$data);

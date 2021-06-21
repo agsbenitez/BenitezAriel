@@ -33,6 +33,7 @@
                                 <th>Descrpcion</th>
                                 <th>Categoria</th>
                                 <th>Precio</th>
+                                <th>Stock</th>
                                 <th>Imagen</th>
                                 <th>Accion</th>
                             </tr>
@@ -64,11 +65,17 @@
                         </div>
                         <div class="form-group">
                             <label>Ingrese Categoria</label>
-                            <input type="text" name="cat" id="cat" class="form-control"></input>
+                            <select name="cat" id="cat" class="form-control">
+                            </select>
+                            <!-- <input type="selct" name="cat" id="cat" class="form-control"></input> -->
                         </div>
                         <div class="form-group">
                             <label>Ingrese Precio</label>
-                            <input type="text" name="price" id="price" class="form-control"></input>
+                            <input type="number" name="price" id="price" class="form-control" min="1" ></input>
+                        </div>
+                        <div class="form-group">
+                            <label>Ingrese Stock</label>
+                            <input type="number" name="stock" id="stock" class="form-control" min="0"></input>
                         </div>
                         <div class="form-group">
                             <label>Ingrese Imagen</label>
