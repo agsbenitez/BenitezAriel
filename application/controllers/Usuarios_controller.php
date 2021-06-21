@@ -6,6 +6,7 @@ class Usuarios_controller extends CI_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('usuario_model');
+        $this->load->model('cart_model');
     }
 
     private function _veri_log()
@@ -109,5 +110,49 @@ class Usuarios_controller extends CI_Controller{
             
         }
     }
+
+
+    public function mis_compras(){
+        if ($this->_veri_log()) {
+            //Muestra la página de listado de usuarios
+		$data = array('titulo' => 'Listado de Compras');
+
+        $session_data = $this->session->userdata('logged_in');
+		
+        $data['perfil_id'] = $session_data['perfil_id'];
+		
+        $data['nombre'] = $session_data['nombre'];
+		
+		$this->load->view('base/encabezado',$data);
+    
+        $loadSections = ['base/menuV2', 'pages/usuarios/mis_compras_list', 'base/footer'];
+        
+        foreach($loadSections as $sections){
+		    $this->load->view($sections);
+		}
+        } else {
+            
+            redirect('login');
+            
+        }
+    } 
+
+    public function ver_mis_compras(){
+        $session_data = $this->session->userdata('logged_in');
+        $id = $session_data['id'];
+        $data = $this->cart_model->ver_compras_encabezado($id);
+        echo json_encode($data);
+    }
+
+
+    public function ver_mis_compras_detail(){
+        $id_compra = $_POST['id_compra'];
+        //hago la consulta y de devulevo como un json
+        $data = $this->cart_model->ver_compras_detail($id_compra);
+
+        echo json_encode($data);
+
+    }
+    
 
 }

@@ -15,6 +15,9 @@ $route['nuevo_usuario/save'] = "Usuarios_controller/action";
 $route['usuarios/listado'] = "Usuarios_controller/list_user";
 $route['usuarios/fetch_data'] = "Usuarios_controller/fetch_data";
 $route['usuarios/delete_data'] = "Usuarios_controller/delete_data";
+$route['usuarios/mis_compras'] = "Usuarios_controller/mis_compras";
+$route['usuarios/ver_mis_compras'] = "Usuarios_controller/ver_mis_compras";
+$route['usuarios/ver_mis_compras_detail'] = "Usuarios_controller/ver_mis_compras_detail";
 
 /*rutas para bootgrid de usuarios */
 //$route['bootgrid/fetch_data'] = "Bootgrid/fetch_data";
@@ -41,6 +44,7 @@ $route['carrito'] = "Cart_controller/carrito_list";
 $route['carrito/delete'] = "Cart_controller/delete_item";
 $route['carrito/modificar'] = "Cart_controller/modificar_item";
 $route['carrito/carrito_total'] = "Cart_controller/carrito_total";
+$route['carrito/save'] = "Cart_controller/save_purchase";
 
 
 /*Login/Logout Routes*/

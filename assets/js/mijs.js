@@ -286,7 +286,7 @@ $(document).ready(function(){
     });
 
     
-
+    /**actualiza la cantidad y elimina si es 0 */
     tablaProductosCarrito.on("change", "input[type='text']", function (evtObj) {
         
         fila = $(this).closest('tr');
@@ -326,6 +326,28 @@ $(document).ready(function(){
         }
         
     })
+
+    /**click ok save */
+    $(document).on("click", "#save_compra", function(e){		        
+        e.preventDefault();
+        if (tablaProductosCarrito.rows().count()>0) {
+            $.ajax({
+                url: base_url + 'carrito/save',
+                type:"POST",
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    tablaProuctos.ajax.reload(null, null);
+                    $(location).attr('href', base_url + 'usuarios/mis_compras');
+                }
+            });
+            
+        }else{
+            alert("No se registran productos en el Carrito");
+        }
+        
+    });
+
 
   
 
@@ -553,7 +575,66 @@ $(document).ready(function(){
     $('#baja').on('click', function(event){
         tablaProuctos.ajax.reload(null, false);
     })
-      
+    
+    
+    /**DataTable para ver las compras de un cliente */
+    var misComprasL = $('#misComprasList').DataTable({
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        language: {
+            "url":"https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+          },
+        select:true,
+        ajax:{
+            url: base_url + 'usuarios/ver_mis_compras',
+            type: 'POST',
+            cache: false, 
+            dataSrc: "",
+        },
+        columns: [
+            { "data": "id"},
+            { "data": "fecha_compra"},
+            { "data": "monto_total"},
+        ],
+        
+
+    });
+
+    /* Tabla detalle de compra modal */
+
+
+    $('#misComprasList').on( 'select.dt', function (e, dt, type, indexes ) {
+        var data = dt.rows( indexes ).data();
+        var id_compra = data[0]['id'];
+        $.ajax({
+            url: base_url + 'usuarios/ver_mis_compras_detail',
+            type: "POST",
+            data: {
+                id_compra: id_compra,
+            },
+            dataType: "JSON",
+            success: function(data) {
+              var html = '';
+              var i;
+              for (i = 0; i < data.length; i++) {
+                html += '<tr>' +
+                  '<td>' + data[i].id + '</td>' +
+                  '<td>' + data[i].descripcion + '</td>' +
+                  '<td>' + data[i].cantidad + '</td>' +
+                  '<td>' + data[i].price + '</td>' +
+                  
+                  '</tr>';
+              }
+              $('#detail').html(html);
+              $('#tablaModal').modal("show");
+        
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert('Error...');
+            }
+        });
+
+    } );
     
 
     

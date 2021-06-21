@@ -81,7 +81,7 @@
             <i class="far fa-user"></i> Hola, <?= $nombre ?>
           </a>
           <div class="dropdown-menu fondoDeMenu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item text-dark pru" href="<?php echo base_url('carrito');?>">
+            <a class="dropdown-item text-dark pru" href="<?php echo base_url('usuarios/mis_compras');?>">
               <i class="fas fa-shopping-bag"></i> Mis Compras
             </a>
             <div class="dropdown-divider"></div>

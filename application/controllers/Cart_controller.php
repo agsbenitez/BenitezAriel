@@ -5,7 +5,7 @@ class Cart_controller extends CI_Controller{
 
     function __construct(){
         parent::__construct();
-        //$this->load->model('cart_model');
+        $this->load->model('cart_model');
 
 
     }
@@ -38,8 +38,6 @@ class Cart_controller extends CI_Controller{
 
 
     public function ver(){
-
-        //echo json_encode($this->cart->contents());
         $array = array();
         foreach($this->cart->contents() as $row){
             $array[] = $row;
@@ -86,34 +84,45 @@ class Cart_controller extends CI_Controller{
         }
     }
 
-        public function delete_item(){
-            //Capturar el rowId que viene por post y atualizar el carro
-            
-            if ($this->_veri_log()) {
-                
-                //Borrar el item
-                
-            }else{
-                
-            }
-        }
+    public function modificar_item(){
+        
+        $data = array(
+            'rowid' => $_POST['rowid'],
+            'qty' => $_POST['qty']
+        );
+        $this->cart->update($data);
+       
+    }
+    
+    
+    public function save_purchase(){
+        /**Debo obtener el id de clientey generar la data para el cabezado y guardar el detalle */
+        $data = array();
+        $session_data = $this->session->userdata('logged_in');
+        
+        $data = [
+            'usuario_id' => $session_data['id'],
+            'fecha_compra' => date('Y-m-d'),
+            'monto_total' => $this->cart->total()
+        ];
+
+        $id = $this->cart_model->insert_ventas($data);
+ 
+        /**Debo obtener el id de la cabecera y el detalle en el formato de la tabla */
+        $data_productos = array();
+        foreach($this->cart->contents() as $row){
+            $data_productos = [
+                'cart_id' => $id,
+                'producto_id' => $row['id'],
+                'cantidad' => $row['qty']  
+            ];
+             $this->cart_model->insert_ventas_detalle($data_productos);
+        };
+
+        $this->cart->destroy();
+    }
 
         
-        
-
-        public function modificar_item(){
-            //Capturar el rowId que viene por post y la cantidad atualizar el carro
-            
-            $data = array(
-                'rowid' => $_POST['rowid'],
-                'qty' => $_POST['qty']
-            );
-            $this->cart->update($data);
-           
-        }
-
-
-
 
     private function _veri_log()
     	{

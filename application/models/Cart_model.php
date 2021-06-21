@@ -2,59 +2,45 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Categorias_model extends CI_Model{
+class Cart_model extends CI_Model{
 
 
     public function __construct(){
         parent::__construct();
     }
 
+
+    public function insert_ventas($data){
+        $this->db->insert('car_encabezado', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
     
-    // Funcion que hace la consulta
-    function make_query(){
-        
-        
+    public function insert_ventas_detalle($data){
+        $this->db->insert('car_detalle', $data);
+    }
 
-        //$this->start_from = ($this->current_page_number - 1) * $this->records_per_page;
-        $this->db->select('*');
-        $this->db->from('cat_produc');        
+    public function ver_compras_encabezado($id_usuario){
+        $this->db->select('cc.id, cc.fecha_compra, cc.monto_total');
         
+        
+        $this->db->from('car_encabezado as cc');
+        $this->db->join('usuarios as usuario', 'cc.usuario_id = usuario.id');
+        $this->db->where('cc.usuario_id', $id_usuario);
         $query = $this->db->get();
         return $query->result_array();
     }
 
-    //Función cuenta todos los registros
-    function count_all_data(){
-        $this->db->select("*");
-        $this->db->from("cat_produc");
+    public function ver_compras_detail($id_compra){
+        $this->db->select('cd.id, cd.cantidad, p.descripcion, p.price' );
+        
+        
+        $this->db->from('car_detalle as cd');
+        $this->db->join('produc as p', 'cd.producto_id = p.id');
+        $this->db->where('cd.cart_id', $id_compra);
         $query = $this->db->get();
-        return $query->num_rows();
-    }
-
-    //función que realiza el insert en la tabla
-    function insert($data){
-
-
-        $this->db->insert('cat_produc', $data);
-    }
-
-    //Busca un registro
-    function fetch_single_data($id){
-        $this->db->where('id', $id);
-        $query = $this->db->get('produc');
         return $query->result_array();
     }
-
-    //Actualiza un usuario
-    function update($data, $id){
-        $this->db->where('id', $id);
-        $this->db->update('produc', $data);
-    }
-
-    //borra un usuario
-    function delete($id){
-        $this->db->where('id', $id);
-        $this->db->update('produc', array('baja' => 1));
-    }
+    
 
 }

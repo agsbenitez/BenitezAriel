@@ -7,7 +7,7 @@
                         
                     </div>
                     <div class="col-md-2" align="right">
-                        <button type="button" id="save_compra" data-toggle="modal"  class="btn btn-info btn-xs">Salvar Compra</button>
+                        <button type="button" id="save_compra" data-toggle="modal"  class="btn btn-info btn-xs">Pagar Compra</button>
                     </div>
                 </div>
                 

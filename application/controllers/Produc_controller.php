@@ -96,7 +96,7 @@ class Produc_controller extends CI_Controller{
    
 
 
-    function fetch_data(){
+    public function fetch_data(){
 
        //busco en el Modelo de Prodcutos 
         $data = $this->produc_model->make_query();
@@ -117,7 +117,7 @@ class Produc_controller extends CI_Controller{
     }
 
 
-    function action(){
+    public function action(){
 
         //Esta función resibe la data via ajax(POST) y determina si es un alta o una mod
         //recibe el archiv disponible en EL Array $_FILES 
@@ -202,7 +202,7 @@ class Produc_controller extends CI_Controller{
         
     }
 
-    function fetch_single_data(){
+    public function fetch_single_data(){
         if($this->input->post('id')){
             $data = $this->produc_model->fetch_single_data($this->input->post('id'));
             foreach($data as $row){
@@ -217,7 +217,7 @@ class Produc_controller extends CI_Controller{
         }
     }
 
-    function delete_data(){
+    public function delete_data(){
         if($this->input->post('id'))
         {
             $this->produc_model->delete($this->input->post('id'));
@@ -233,7 +233,7 @@ class Produc_controller extends CI_Controller{
 	* Permite archivos gif, jpg, png
 	* Verifica si los datos son correcto en conjunto con la imagen y lo mueva al sevidor de ser posible
 	*/
-	function _image_upload($file)
+	public function _image_upload($file)
 	{
         $this->load->library('upload');
 
